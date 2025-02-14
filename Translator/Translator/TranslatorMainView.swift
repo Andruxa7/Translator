@@ -83,21 +83,10 @@ struct TranslatorMainView: View {
                             }
                         } label: {
                             if translatorState == .microphoneSettings {
-                                //
                                 VStack {
-                                    Image("microphone")
-                                        .resizable()
-                                        .renderingMode(.template)
-                                        .scaledToFit()
-                                        .frame(width: 70, height: 70)
-                                        .foregroundStyle(Color(hex: 0x292D32))
-                                        .padding(.top, 50)
-                                    Text("Start Speak")
-                                        .font(.custom(customFont, size: 16))
-                                        .multilineTextAlignment(.center)
-                                        .frame(width: 138.0, height: 22.0)
-                                        .foregroundStyle(Color(hex: 0x292D32))
-                                        .padding(.vertical)
+                                    LottieMicrophoneView()
+                                        .padding(.bottom, 8)
+                                        .frame(width: 170, height: 170)
                                 }
                                 .frame(width: 178, height: 176)
                                 .background(Color(hex: 0xFFFFFF))
