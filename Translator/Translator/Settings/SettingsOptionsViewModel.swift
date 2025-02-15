@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum SettingsOptionsViewModel: Int, Identifiable, CaseIterable {
     case rateUs
@@ -23,6 +24,18 @@ enum SettingsOptionsViewModel: Int, Identifiable, CaseIterable {
         case .restorePurchases: return "Restore Purchases"
         case .privacyPolicy: return "Privacy Policy"
         case .termsOfUse: return "Terms of Use"
+        }
+    }
+    
+    @ViewBuilder
+    func destinationView() -> some View {
+        switch self {
+        case .rateUs: RateUsView()
+        case .shareApp: ShareAppView()
+        case .contactUs: ContactUsView()
+        case .restorePurchases: RestorePurchasesView()
+        case .privacyPolicy: PrivacyPolicyView()
+        case .termsOfUse: TermsOfUseView()
         }
     }
     
