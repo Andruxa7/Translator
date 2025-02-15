@@ -42,17 +42,13 @@ final class TranslatorViewModel: ObservableObject {
         showLoadingOverlay = true
         
         Task { @MainActor in
-            // Show loading overlay for 2.5 seconds
             try? await Task.sleep(nanoseconds: 2_500_000_000)
             
-            print("Navigate to resultScreen")
             self.showLoadingOverlay = false
             
             withAnimation {
                 self.navPath.append(TranslatorViewModel.NavigationTarget.resultScreen)
             }
-            
-            print("Navigation path after append: \(self.navPath)")
         }
     }
 }
