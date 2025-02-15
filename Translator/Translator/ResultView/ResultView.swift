@@ -36,6 +36,7 @@ struct ResultView: View {
                     Button {
                         withAnimation {
                             vm.navPath = .init()
+                            vm.translatorState = .main
                         }
                     } label: {
                         ZStack {

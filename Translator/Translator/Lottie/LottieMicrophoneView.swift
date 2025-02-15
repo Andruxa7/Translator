@@ -45,7 +45,15 @@ struct LottieMicrophoneView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        // Navigation destination
+        .navigationDestination(for: TranslatorViewModel.NavigationTarget.self) { target in
+            switch target {
+                case .resultScreen:
+                ResultView()
+                    .environmentObject(vm)
+            case .translationScreen:
+                EmptyView()
+            }
+        }
     }
     
     private func setupAnimation() {
@@ -62,6 +70,7 @@ struct LottieMicrophoneView: View {
     
     private func stopAnimation() {
         playbackMode = .paused
+        vm.goToResultView()
     }
 }
 

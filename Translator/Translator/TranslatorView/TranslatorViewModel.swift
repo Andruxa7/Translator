@@ -12,12 +12,19 @@ final class TranslatorViewModel: ObservableObject {
     
     @Published var navPath = NavigationPath()
     @Published var navigationTarget: NavigationTarget? = nil
+    @Published var translatorState: TranslatorState = .microphonePermission
     @Published var showLoadingOverlay = false
     @Published var selectedPet: PetOptionsViewModel = .cat
     
     enum NavigationTarget: Hashable {
         case resultScreen
         case translationScreen
+    }
+    
+    enum TranslatorState {
+        case main
+        case microphonePermission
+        case microphoneStartRecording
     }
     
     func getRandomPhrase() -> String {

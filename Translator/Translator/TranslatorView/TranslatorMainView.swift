@@ -7,19 +7,12 @@
 
 import SwiftUI
 
-enum TranslatorState {
-    case main
-    case microphonePermission
-    case microphoneSettings
-}
-
 struct TranslatorMainView: View {
     
     @Environment(\.dismiss) var dismiss
     @StateObject var vm = TranslatorViewModel()
     
     @State private var isHuman: Bool = false
-    @State private var translatorState: TranslatorState = .main
     @State private var activeAlert: ActiveAlert? = nil
     
     
@@ -76,13 +69,34 @@ struct TranslatorMainView: View {
                     
                     HStack(spacing: 35) {
                         Button {
-                            if translatorState == .microphoneSettings {
-                                print("translatorState == .microphoneSettings")
-                            } else {
+                            if vm.translatorState == .microphonePermission {
                                 activeAlert = .askingForPermissionAlert
+                            } else if vm.translatorState == .main {
+                                vm.translatorState = .microphoneStartRecording
                             }
                         } label: {
-                            if translatorState == .microphoneSettings {
+                            switch vm.translatorState {
+                            case .main:
+                                VStack {
+                                    Image("microphone")
+                                        .resizable()
+                                        .renderingMode(.template)
+                                        .scaledToFit()
+                                        .frame(width: 70, height: 70)
+                                        .foregroundStyle(Color(hex: 0x292D32))
+                                        .padding(.top, 50)
+                                    Text("Start Speak")
+                                        .font(.custom(customFont, size: 16))
+                                        .multilineTextAlignment(.center)
+                                        .frame(width: 138.0, height: 22.0)
+                                        .foregroundStyle(Color(hex: 0x292D32))
+                                        .padding(.vertical)
+                                }
+                                .frame(width: 178, height: 176)
+                                .background(Color(hex: 0xFFFFFF))
+                                .cornerRadius(16)
+                                .shadow(radius: 5)
+                            case .microphoneStartRecording:
                                 VStack {
                                     LottieMicrophoneView()
                                         .padding(.bottom, 8)
@@ -92,7 +106,7 @@ struct TranslatorMainView: View {
                                 .background(Color(hex: 0xFFFFFF))
                                 .cornerRadius(16)
                                 .shadow(radius: 5)
-                            } else {
+                            case .microphonePermission:
                                 VStack {
                                     Image("microphone")
                                         .resizable()
@@ -165,7 +179,7 @@ struct TranslatorMainView: View {
                     title: Text("\"Translator App\" is asking for permission to access your microphone"),
                     message: Text("Allow access to your microphone to use the app's features"),
                     primaryButton: .default(Text("Allow Access"), action: {
-                        translatorState = .main
+                        vm.translatorState = .main
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             activeAlert = .microphoneAccessAlert
                         }
@@ -180,11 +194,11 @@ struct TranslatorMainView: View {
                         if let url = URL(string: UIApplication.openSettingsURLString) {
                             UIApplication.shared.open(url)
                         }
-                        translatorState = .microphoneSettings
+                        vm.translatorState = .microphoneStartRecording
                         dismiss()
                     }),
                     secondaryButton: .cancel({
-                        translatorState = .main
+                        vm.translatorState = .microphonePermission
                         dismiss()
                     })
                 )
