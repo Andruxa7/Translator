@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var selectedTab: TabbedItems = .translator
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            MainTabbedView(selectedTab: selectedTab.rawValue)
         }
-        .padding()
     }
 }
 
